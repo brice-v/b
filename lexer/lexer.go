@@ -27,7 +27,7 @@ func isDigit(ch byte) bool {
 
 func (l *Lexer) readIdentifier() string {
 	position := l.pos
-	for isLetter(l.ch) {
+	for isLetter(l.ch) || isDigit(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.pos]
@@ -41,6 +41,19 @@ func (l *Lexer) skipWhitespace() {
 
 func (l *Lexer) readNumber() string {
 	position := l.pos
+	nextChar := l.peekChar()
+	if l.ch == '0' {
+		if nextChar == 'b' ||
+			nextChar == 'B' ||
+			nextChar == 'x' ||
+			nextChar == 'X' ||
+			nextChar == 'o' ||
+			nextChar == 'O' {
+			// skipping over the 2 chars
+			l.readChar()
+			l.readChar()
+		}
+	}
 	for {
 		ok := isDigit(l.ch)
 		if !ok {
