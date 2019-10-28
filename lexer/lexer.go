@@ -13,8 +13,8 @@ type Lexer struct {
 	inputLen int
 }
 
-func newToken(tokenTyoe token.TokenType, ch byte) token.Token {
-	return token.Token{Type: tokenTyoe, Literal: string(ch)}
+func newToken(tokenType token.TokenType, ch byte) token.Token {
+	return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
 func isLetter(ch byte) bool {
