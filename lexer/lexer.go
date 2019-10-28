@@ -22,7 +22,7 @@ func isLetter(ch byte) bool {
 }
 
 func isDigit(ch byte) bool {
-	return '0' <= ch && ch <= '9'
+	return '0' <= ch && ch <= '9' || ch == '_'
 }
 
 func (l *Lexer) readIdentifier() string {
@@ -41,7 +41,11 @@ func (l *Lexer) skipWhitespace() {
 
 func (l *Lexer) readNumber() string {
 	position := l.pos
-	for isDigit(l.ch) {
+	for {
+		ok := isDigit(l.ch)
+		if !ok {
+			break
+		}
 		l.readChar()
 	}
 	return l.input[position:l.pos]

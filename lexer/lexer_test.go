@@ -66,6 +66,7 @@ macro(x, y) { x + y; };
 <=
 >=
 not and or &%|
+0_10
 `
 
 	tests := []struct {
@@ -176,6 +177,7 @@ not and or &%|
 		{token.AMPERSAND, "&"},
 		{token.PERCENT, "%"},
 		{token.PIPE, "|"},
+		{token.NUM, "0_10"},
 		{token.EOF, ""},
 	}
 
