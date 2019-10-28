@@ -65,7 +65,7 @@ macro(x, y) { x + y; };
 ^~.
 <=
 >=
-
+not and or
 `
 
 	tests := []struct {
@@ -170,6 +170,9 @@ macro(x, y) { x + y; };
 		{token.DOT, "."},
 		{token.LTE, "<="},
 		{token.GTE, ">="},
+		{token.NOT, "not"},
+		{token.AND, "and"},
+		{token.OR, "or"},
 		{token.EOF, ""},
 	}
 
