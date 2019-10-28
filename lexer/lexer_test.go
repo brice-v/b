@@ -65,7 +65,7 @@ macro(x, y) { x + y; };
 ^~.
 <=
 >=
-not and or
+not and or &%|
 `
 
 	tests := []struct {
@@ -173,6 +173,9 @@ not and or
 		{token.NOT, "not"},
 		{token.AND, "and"},
 		{token.OR, "or"},
+		{token.AMPERSAND, "&"},
+		{token.PERCENT, "%"},
+		{token.PIPE, "|"},
 		{token.EOF, ""},
 	}
 

@@ -26,6 +26,8 @@ const (
 	HAT       = "^"
 	AMPERSAND = "&"
 	TILDE     = "~"
+	PIPE      = "|"
+	PERCENT   = "%"
 
 	LT  = "<"
 	LTE = "<="
