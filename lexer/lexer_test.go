@@ -61,6 +61,11 @@ func TestNextTokenLong(t *testing.T) {
 [1, 2];
 {"foo": "bar"}
 macro(x, y) { x + y; };
+
+^~.
+<=
+>=
+
 `
 
 	tests := []struct {
@@ -160,6 +165,11 @@ macro(x, y) { x + y; };
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
 		{token.SEMICOLON, ";"},
+		{token.HAT, "^"},
+		{token.TILDE, "~"},
+		{token.DOT, "."},
+		{token.LTE, "<="},
+		{token.GTE, ">="},
 		{token.EOF, ""},
 	}
 
