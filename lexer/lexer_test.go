@@ -73,7 +73,7 @@ not and or &%|
 0X1
 0o1
 0O1abc
-0x123_abc_123
+0x123_abc_123**
 `
 
 	tests := []struct {
@@ -194,6 +194,7 @@ not and or &%|
 		{token.IDENT, "abc"},
 		{token.NUM, "0x123_"},
 		{token.IDENT, "abc_123"},
+		{token.POW, "**"},
 		{token.EOF, ""},
 	}
 

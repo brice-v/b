@@ -37,6 +37,8 @@ const (
 	EQ  = "=="
 	NEQ = "!="
 
+	POW = "**"
+
 	// List Tokens
 	LBRACKET = "["
 	RBRACKET = "]"
