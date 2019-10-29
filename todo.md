@@ -11,4 +11,4 @@
 - [ ] Begin thinking about how exactly things should translate
   - [ ] Sets (Map with bool key)
   - [ ] Objs (Want obj to be like js with properties of go)
-  
+- [ ] Document the current lexer properly before moving on to next phase

@@ -6,7 +6,7 @@ import (
 )
 
 func TestNextTokenShort(t *testing.T) {
-	input := `=+(){},;`
+	input := "=+(){},;`"
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -20,6 +20,7 @@ func TestNextTokenShort(t *testing.T) {
 		{token.RBRACE, "}"},
 		{token.COMMA, ","},
 		{token.SEMICOLON, ";"},
+		{token.BACKTICK, "`"},
 		{token.EOF, ""},
 	}
 
@@ -212,4 +213,48 @@ not and or &%|
 		}
 	}
 
+}
+
+func TestNextTokenShort2(t *testing.T) {
+	input := `abc_fun_123; fun
+	&=|=^=*=-=+=/=//>><<%=++--~=
+	`
+
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.IDENT, "abc_fun_123"},
+		{token.SEMICOLON, ";"},
+		{token.FUNCTION, "fun"},
+		{token.BITANDEQ, "&="},
+		{token.BITOREQ, "|="},
+		{token.BITXOREQ, "^="},
+		{token.MULEQ, "*="},
+		{token.MINUSEQ, "-="},
+		{token.PLUSEQ, "+="},
+		{token.DIVEQ, "/="},
+		{token.FLOORDIV, "//"},
+		{token.BITRS, ">>"},
+		{token.BITLS, "<<"},
+		{token.MODEQ, "%="},
+		{token.PLUSPLUS, "++"},
+		{token.MINUSMINUS, "--"},
+		{token.BITNOTEQ, "~="},
+		{token.EOF, ""},
+	}
+
+	l := New(input)
+
+	for i, tt := range tests {
+		tok := l.NextToken()
+
+		if tok.Type != tt.expectedType {
+			t.Fatalf("test[%d] - tokentype wrong. expected=%q, got=%q", i, tt.expectedType, tok.Type)
+		}
+
+		if tok.Literal != tt.expectedLiteral {
+			t.Fatalf("test[%d] - literal wrong. expected=%q, got=%q", i, tt.expectedLiteral, tok.Literal)
+		}
+	}
 }

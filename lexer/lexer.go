@@ -79,9 +79,29 @@ func (l *Lexer) NextToken() token.Token {
 			tok = newToken(token.ASSIGN, l.ch)
 		}
 	case '+':
-		tok = newToken(token.PLUS, l.ch)
+		if l.peekChar() == '+' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.PLUSPLUS, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.PLUSEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.PLUS, l.ch)
+		}
 	case '-':
-		tok = newToken(token.MINUS, l.ch)
+		if l.peekChar() == '-' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.MINUSMINUS, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.MINUSEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.MINUS, l.ch)
+		}
 	case '!':
 		if l.peekChar() == '=' {
 			ch := l.ch
@@ -91,17 +111,35 @@ func (l *Lexer) NextToken() token.Token {
 			tok = newToken(token.BANG, l.ch)
 		}
 	case '/':
-		tok = newToken(token.FSLASH, l.ch)
+		if l.peekChar() == '/' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.FLOORDIV, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.DIVEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.FSLASH, l.ch)
+		}
 	case '*':
 		if l.peekChar() == '*' {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.POW, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.MULEQ, Literal: string(ch) + string(l.ch)}
 		} else {
 			tok = newToken(token.ASTERISK, l.ch)
 		}
 	case '<':
-		if l.peekChar() == '=' {
+		if l.peekChar() == '<' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.BITLS, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.LTE, Literal: string(ch) + string(l.ch)}
@@ -109,7 +147,11 @@ func (l *Lexer) NextToken() token.Token {
 			tok = newToken(token.LT, l.ch)
 		}
 	case '>':
-		if l.peekChar() == '=' {
+		if l.peekChar() == '>' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.BITRS, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.GTE, Literal: string(ch) + string(l.ch)}
@@ -138,17 +180,49 @@ func (l *Lexer) NextToken() token.Token {
 	case ':':
 		tok = newToken(token.COLON, l.ch)
 	case '^':
-		tok = newToken(token.HAT, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.BITXOREQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.HAT, l.ch)
+		}
 	case '~':
-		tok = newToken(token.TILDE, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.BITNOTEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.TILDE, l.ch)
+		}
 	case '.':
 		tok = newToken(token.DOT, l.ch)
 	case '%':
-		tok = newToken(token.PERCENT, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.MODEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.PERCENT, l.ch)
+		}
 	case '&':
-		tok = newToken(token.AMPERSAND, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.BITANDEQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.AMPERSAND, l.ch)
+		}
 	case '|':
-		tok = newToken(token.PIPE, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.BITOREQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.PIPE, l.ch)
+		}
+	case '`':
+		tok = newToken(token.BACKTICK, l.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF

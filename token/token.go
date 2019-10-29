@@ -28,6 +28,7 @@ const (
 	TILDE     = "~"
 	PIPE      = "|"
 	PERCENT   = "%"
+	BACKTICK  = "`"
 
 	LT  = "<"
 	LTE = "<="
@@ -37,7 +38,21 @@ const (
 	EQ  = "=="
 	NEQ = "!="
 
-	POW = "**"
+	POW        = "**"
+	FLOORDIV   = "//"
+	PLUSEQ     = "+="
+	MINUSEQ    = "-="
+	MULEQ      = "*="
+	DIVEQ      = "/="
+	BITANDEQ   = "&="
+	BITOREQ    = "|="
+	BITNOTEQ   = "~="
+	BITXOREQ   = "^="
+	MODEQ      = "%="
+	BITLS      = "<<"
+	BITRS      = ">>"
+	PLUSPLUS   = "++"
+	MINUSMINUS = "--"
 
 	// List Tokens
 	LBRACKET = "["
@@ -70,6 +85,9 @@ const (
 	AND = "AND"
 	OR  = "OR"
 	NOT = "NOT"
+
+	IN  = "IN"
+	FOR = "FOR"
 )
 
 var keywords = map[string]TokenType{
@@ -85,6 +103,8 @@ var keywords = map[string]TokenType{
 	"and":    AND,
 	"or":     OR,
 	"not":    NOT,
+	"in":     IN,
+	"for":    FOR,
 }
 
 func LookupIdent(ident string) TokenType {
