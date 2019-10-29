@@ -57,25 +57,25 @@ func TestNextTokenLong(t *testing.T) {
 		return false;
 	}
 	== !=
-"foobar"
-"foo bar"
-[1, 2];
-{"foo": "bar"}
-macro(x, y) { x + y; };
+	"foobar"
+	"foo bar"
+	[1, 2];
+	{"foo": "bar"}
+	macro(x, y) { x + y; };
 
-^~.
-<=
->=
-not and or &%|
-0_10
-0b10_111
-0B1
-0x1
-0X1
-0o1
-0O1abc
-0x123_abc_123**
-`
+	^~.
+	<=
+	>=
+	not and or &%|
+	0_10
+	0b10_111
+	0B1
+	0x1
+	0X1
+	0o1
+	0O1abc
+	0x123_abc_123**
+	`
 
 	tests := []struct {
 		expectedType    token.TokenType
