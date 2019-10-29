@@ -219,6 +219,8 @@ func TestNextTokenShort2(t *testing.T) {
 	input := `abc_fun_123; fun
 	&=|=^=*=-=+=/=//>><<%=++--~=in for infor
 	?
+	0.1234
+	abc.two  0.32
 	`
 
 	tests := []struct {
@@ -246,6 +248,11 @@ func TestNextTokenShort2(t *testing.T) {
 		{token.FOR, "for"},
 		{token.IDENT, "infor"},
 		{token.QUESTION, "?"},
+		{token.NUM, "0.1234"},
+		{token.IDENT, "abc"},
+		{token.DOT, "."},
+		{token.IDENT, "two"},
+		{token.NUM, "0.32"},
 		{token.EOF, ""},
 	}
 

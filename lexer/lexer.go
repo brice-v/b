@@ -55,7 +55,9 @@ func (l *Lexer) readNumber() string {
 		}
 	}
 	for {
-		ok := isDigit(l.ch)
+		ok := isDigit(l.ch) ||
+			(l.ch == '.' && isDigit(l.peekChar())) ||
+			(isDigit(l.ch) && l.peekChar() == '.')
 		if !ok {
 			break
 		}
@@ -245,7 +247,7 @@ func (l *Lexer) NextToken() token.Token {
 	return tok
 }
 
-func (l *Lexer) peekCharAtOffet(offset int) byte {
+func (l *Lexer) peekCharAtOffset(offset int) byte {
 	nextPos := l.pos + offset
 	if nextPos >= l.inputLen {
 		return 0
