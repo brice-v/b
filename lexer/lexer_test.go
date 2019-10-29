@@ -218,6 +218,7 @@ not and or &%|
 func TestNextTokenShort2(t *testing.T) {
 	input := `abc_fun_123; fun
 	&=|=^=*=-=+=/=//>><<%=++--~=in for infor
+	?
 	`
 
 	tests := []struct {
@@ -244,6 +245,7 @@ func TestNextTokenShort2(t *testing.T) {
 		{token.IN, "in"},
 		{token.FOR, "for"},
 		{token.IDENT, "infor"},
+		{token.QUESTION, "?"},
 		{token.EOF, ""},
 	}
 

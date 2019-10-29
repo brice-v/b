@@ -223,6 +223,8 @@ func (l *Lexer) NextToken() token.Token {
 		}
 	case '`':
 		tok = newToken(token.BACKTICK, l.ch)
+	case '?':
+		tok = newToken(token.QUESTION, l.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF

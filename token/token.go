@@ -29,6 +29,7 @@ const (
 	PIPE      = "|"
 	PERCENT   = "%"
 	BACKTICK  = "`"
+	QUESTION  = "?"
 
 	LT  = "<"
 	LTE = "<="
