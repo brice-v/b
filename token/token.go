@@ -55,6 +55,12 @@ const (
 	PLUSPLUS   = "++"
 	MINUSMINUS = "--"
 
+	RARROW    = "=>"
+	DOTDOT    = ".."
+	DOTDOTDOT = "..."
+	POUND     = "#"
+	MLCOMMENT = "###"
+
 	// List Tokens
 	LBRACKET = "["
 	RBRACKET = "]"
@@ -80,6 +86,7 @@ const (
 	FALSE    = "FALSE"
 	IF       = "IF"
 	ELSE     = "ELSE"
+	ELIF     = "ELIF"
 	RETURN   = "RETURN"
 	MACRO    = "MACRO"
 
@@ -89,6 +96,21 @@ const (
 
 	IN  = "IN"
 	FOR = "FOR"
+
+	// Types are keywords? this may not be correct
+	INT        = "INT"
+	UINT       = "UINT"
+	FLOAT      = "FLOAT"
+	STRINGTYPE = "STRINGTYPE"
+	OBJECT     = "OBJ"
+	ENUM       = "ENUM"
+	LIST       = "LIST"
+	MAP        = "MAP"
+	CHANNEL    = "CHAN"
+	ANY        = "ANY"
+	BOOLEAN    = "BOOL"
+	CHARACTER  = "CHAR"
+	RUNE       = "RUNE"
 )
 
 var keywords = map[string]TokenType{
@@ -99,6 +121,7 @@ var keywords = map[string]TokenType{
 	"false":  FALSE,
 	"if":     IF,
 	"else":   ELSE,
+	"elif":   ELIF,
 	"return": RETURN,
 	"macro":  MACRO,
 	"and":    AND,
@@ -106,8 +129,23 @@ var keywords = map[string]TokenType{
 	"not":    NOT,
 	"in":     IN,
 	"for":    FOR,
+	"int":    INT,
+	"uint":   UINT,
+	"float":  FLOAT,
+	"str":    STRINGTYPE,
+	"obj":    OBJECT,
+	"enum":   ENUM,
+	"list":   LIST,
+	"map":    MAP,
+	"chan":   CHANNEL,
+	"any":    ANY,
+	"bool":   BOOLEAN,
+	"char":   CHARACTER,
+	"rune":   RUNE,
 }
 
+// LookupIdent will return an identifier token if the identifier
+// is not found in the keywords lookup table
 func LookupIdent(ident string) TokenType {
 	if tok, ok := keywords[ident]; ok {
 		return tok
