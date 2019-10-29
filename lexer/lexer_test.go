@@ -148,8 +148,8 @@ func TestNextTokenLong(t *testing.T) {
 		{token.RBRACE, "}"},
 		{token.EQ, "=="},
 		{token.NEQ, "!="},
-		{token.STRING, "foobar"},
-		{token.STRING, "foo bar"},
+		{token.STRINGLIT, "foobar"},
+		{token.STRINGLIT, "foo bar"},
 		{token.LBRACKET, "["},
 		{token.NUM, "1"},
 		{token.COMMA, ","},
@@ -157,9 +157,9 @@ func TestNextTokenLong(t *testing.T) {
 		{token.RBRACKET, "]"},
 		{token.SEMICOLON, ";"},
 		{token.LBRACE, "{"},
-		{token.STRING, "foo"},
+		{token.STRINGLIT, "foo"},
 		{token.COLON, ":"},
-		{token.STRING, "bar"},
+		{token.STRINGLIT, "bar"},
 		{token.RBRACE, "}"},
 		{token.MACRO, "macro"},
 		{token.LPAREN, "("},
@@ -221,6 +221,8 @@ func TestNextTokenShort2(t *testing.T) {
 	?
 	0.1234
 	abc.two  0.32
+	int uint float str obj enum list map chan any
+	bool char rune set
 	`
 
 	tests := []struct {
@@ -253,6 +255,20 @@ func TestNextTokenShort2(t *testing.T) {
 		{token.DOT, "."},
 		{token.IDENT, "two"},
 		{token.NUM, "0.32"},
+		{token.INT, "int"},
+		{token.UINT, "uint"},
+		{token.FLOAT, "float"},
+		{token.STRINGTYPE, "str"},
+		{token.OBJECT, "obj"},
+		{token.ENUM, "enum"},
+		{token.LIST, "list"},
+		{token.MAP, "map"},
+		{token.CHANNEL, "chan"},
+		{token.ANY, "any"},
+		{token.BOOLEAN, "bool"},
+		{token.CHARACTER, "char"},
+		{token.RUNE, "rune"},
+		{token.SET, "set"},
 		{token.EOF, ""},
 	}
 

@@ -12,9 +12,9 @@ const (
 	EOF     = "EOF"
 
 	// Identifiers and literals
-	IDENT  = "IDENT"
-	NUM    = "NUM"
-	STRING = "STRING"
+	IDENT     = "IDENT"
+	NUM       = "NUM"
+	STRINGLIT = "STRINGLIT"
 
 	// Operators
 	ASSIGN    = "="
@@ -101,11 +101,12 @@ const (
 	INT        = "INT"
 	UINT       = "UINT"
 	FLOAT      = "FLOAT"
-	STRINGTYPE = "STRINGTYPE"
+	STRINGTYPE = "STRING"
 	OBJECT     = "OBJ"
 	ENUM       = "ENUM"
 	LIST       = "LIST"
 	MAP        = "MAP"
+	SET        = "SET"
 	CHANNEL    = "CHAN"
 	ANY        = "ANY"
 	BOOLEAN    = "BOOL"
@@ -142,6 +143,7 @@ var keywords = map[string]TokenType{
 	"bool":   BOOLEAN,
 	"char":   CHARACTER,
 	"rune":   RUNE,
+	"set":    SET,
 }
 
 // LookupIdent will return an identifier token if the identifier
