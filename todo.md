@@ -13,3 +13,4 @@
   - [ ] Objs (Want obj to be like js with properties of go)
 - [ ] Document the current lexer properly before moving on to next phase
 - [ ] Breakup lexer test into groups according to docs (that need to be created ^)
+- [ ] Write test for repl
