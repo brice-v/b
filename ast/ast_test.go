@@ -48,3 +48,21 @@ func TestVal(t *testing.T) {
 		t.Errorf("program.String() wrong. got=%q", program.String())
 	}
 }
+
+func TestReturnStatement(t *testing.T) {
+	program := &Program{
+		Statements: []Statement{
+			&ReturnStatement{
+				Token: token.Token{Type: token.RETURN, Literal: "return"},
+				ReturnValue: &Identifier{
+					Token: token.Token{Type: token.IDENT, Literal: "myVar"},
+					Value: "myVar",
+				},
+			},
+		},
+	}
+
+	if program.String() != "return myVar;" {
+		t.Errorf("program.String() wrong. got=%q", program.String())
+	}
+}

@@ -72,7 +72,6 @@ func (p *Parser) parseVarStatement() *ast.VarStatement {
 	}
 
 	return stmt
-
 }
 
 func (p *Parser) parseValStatement() *ast.ValStatement {
@@ -87,13 +86,26 @@ func (p *Parser) parseValStatement() *ast.ValStatement {
 	if !p.expectPeek(token.ASSIGN) {
 		return nil
 	}
-	
+
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
 
 	return stmt
+}
 
+func (p *Parser) parseReturnStatment() *ast.ReturnStatement {
+	stmt := &ast.ReturnStatement{Token: p.curToken}
+
+	p.nextToken()
+
+	// TODO Were skipping the expressions until we encounter
+	// a semicolon.
+	for !p.curTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
 }
 
 func (p *Parser) curTokenIs(t token.TokenType) bool {
@@ -108,7 +120,6 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 	if p.peekTokenIs(t) {
 		p.nextToken()
 		return true
-	} else {
-		return false
 	}
+	return false
 }
