@@ -7,6 +7,20 @@ import (
 	"fmt"
 )
 
+// TODO: Need to add precedence for remaining operators
+// this includes, boolean stuff (and or not), bitwise (& | ~ ^),
+//
+const (
+	_           int = iota
+	LOWEST          // the lowest precedence possible
+	EQUALS          // this includes any assignment operators (==)
+	LESSGREATER     // > or <
+	SUM             // +
+	PRODUCT         // *
+	PREFIX          // -x or !x (note that ! will probably become `not` for boolean stuff)
+	CALL            // x() or x(y)
+)
+
 type (
 	prefixParseFn func() ast.Expression
 	infixParseFn  func(ast.Expression) ast.Expression
@@ -28,11 +42,16 @@ type Parser struct {
 
 // New returns a new instance of the parser
 func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l, errors: []string{}}
+	p := &Parser{l: l,
+		errors:         []string{},
+		prefixParseFns: make(map[token.TokenType]prefixParseFn),
+	}
 
 	// Read two tokens so curToken and peekToken are both set
 	p.nextToken()
 	p.nextToken()
+
+	p.registerPrefix(token.IDENT, p.parseIdentifier)
 
 	return p
 }
@@ -45,8 +64,8 @@ func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
 
 // registerInfix maps a token type to a corresponding function for infix functions
 // ie. 100 - 109 the `-` gets associated with the 'subtract op' (TODO improve description)
-func (p *Parser) registerInfix(tokenType token.TokenType, fn prefixParseFn) {
-	p.prefixParseFns[tokenType] = fn
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
+	p.infixParseFns[tokenType] = fn
 }
 
 // Errors returns the inner error state of the parser
@@ -90,8 +109,30 @@ func (p *Parser) parseStatement() ast.Statement {
 	case token.RETURN:
 		return p.parseReturnStatment()
 	default:
+		return p.parseExpressionStatement()
+	}
+}
+
+func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
+	stmt := &ast.ExpressionStatement{Token: p.curToken}
+
+	stmt.Expression = p.parseExpression(LOWEST)
+
+	if p.peekTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
+}
+
+func (p *Parser) parseExpression(precedence int) ast.Expression {
+	prefix := p.prefixParseFns[p.curToken.Type]
+	if prefix == nil {
 		return nil
 	}
+
+	leftExp := prefix()
+	return leftExp
 }
 
 func (p *Parser) parseVarStatement() *ast.VarStatement {
@@ -148,6 +189,10 @@ func (p *Parser) parseReturnStatment() *ast.ReturnStatement {
 	return stmt
 }
 
+func (p *Parser) parseIdentifier() ast.Expression {
+	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+}
+
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
 }
@@ -160,8 +205,8 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 	if p.peekTokenIs(t) {
 		p.nextToken()
 		return true
-	} else {
-		p.peekError(t)
-		return false
 	}
+	p.peekError(t)
+	return false
+
 }
