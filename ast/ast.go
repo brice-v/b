@@ -5,16 +5,19 @@ import (
 	"bytes"
 )
 
+// Node defines an interface for all nodes in the AST.
 type Node interface {
 	TokenLiteral() string
 	String() string
 }
 
+// Statement defines the interface for all statement nodes.
 type Statement interface {
 	Node
 	statementNode()
 }
 
+// Expression defines the interface for all expression nodes.
 type Expression interface {
 	Node
 	expressionNode()
@@ -82,6 +85,7 @@ func (vs *ValStatement) String() string {
 	return out.String()
 }
 
+// Identifier is a node that holds the literal value of an identifier
 type Identifier struct {
 	Token token.Token
 	Value string
