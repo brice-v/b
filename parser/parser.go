@@ -7,6 +7,11 @@ import (
 	"fmt"
 )
 
+type (
+	prefixParseFn func() ast.Expression
+	infixParseFn  func(ast.Expression) ast.Expression
+)
+
 // Parser is the object used to hold the parser's state as it
 // continues to call 'next token' on the lexer
 type Parser struct {
@@ -16,6 +21,9 @@ type Parser struct {
 
 	curToken  token.Token
 	peekToken token.Token
+
+	prefixParseFns map[token.TokenType]prefixParseFn
+	infixParseFns  map[token.TokenType]infixParseFn
 }
 
 // New returns a new instance of the parser
@@ -27,6 +35,18 @@ func New(l *lexer.Lexer) *Parser {
 	p.nextToken()
 
 	return p
+}
+
+// registerPrefix maps a token type to a corresponding function for prefix functions
+// ie. -109 the `-` gets associated with the 'negate op' (TODO improve description)
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
+}
+
+// registerInfix maps a token type to a corresponding function for infix functions
+// ie. 100 - 109 the `-` gets associated with the 'subtract op' (TODO improve description)
+func (p *Parser) registerInfix(tokenType token.TokenType, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
 }
 
 // Errors returns the inner error state of the parser
