@@ -5,6 +5,7 @@ import (
 	"b/lexer"
 	"b/token"
 	"fmt"
+	"strconv"
 )
 
 // TODO: Need to add precedence for remaining operators
@@ -52,6 +53,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.nextToken()
 
 	p.registerPrefix(token.IDENT, p.parseIdentifier)
+	p.registerPrefix(token.NUM, p.parseNumberLiteral)
 
 	return p
 }
@@ -191,6 +193,27 @@ func (p *Parser) parseReturnStatment() *ast.ReturnStatement {
 
 func (p *Parser) parseIdentifier() ast.Expression {
 	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+}
+
+func (p *Parser) parseNumberLiteral() ast.Expression {
+	// this is the helper function which will end up properly parsing numbers
+	// for now only integers will be supported
+	return p.parseIntegerLiteral()
+}
+
+func (p *Parser) parseIntegerLiteral() ast.Expression {
+	lit := &ast.IntegerLiteral{Token: p.curToken}
+	//TODO: Potentially parse this ourselves to figure out which type of number it is?
+	// then this would end up being a helper that gets called first before
+	// the type of number that needs to be parsed
+	value, err := strconv.ParseInt(p.curToken.Literal, 0, 64)
+	if err != nil {
+		msg := fmt.Sprintf("could not parse %q as integer", p.curToken.Literal)
+		p.errors = append(p.errors, msg)
+	}
+	lit.Value = value
+
+	return lit
 }
 
 func (p *Parser) curTokenIs(t token.TokenType) bool {
